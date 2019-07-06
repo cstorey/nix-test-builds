@@ -14,7 +14,7 @@ jobs:
             # nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
             nix-channel --add https://nixos.org/channels/nixos-19.03-small nixpkgs
             nix-channel --update
-            nix-env -i xz
+            nix-env -i xz -i findutils
     - run: nix-build
     - save_cache:
         name: Nix cache save
