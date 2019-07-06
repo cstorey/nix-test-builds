@@ -17,7 +17,8 @@ jobs:
     - run: nix-build
     - run: |
         nix-shell shell.nix --command '
-            nix-store -qR  result | tee closure.txt
+            set -xeuo pipefail &&
+            nix-store -qR  result | tee closure.txt &&
             cat closure.txt | xargs nix-store --export | xz -v > /tmp/hi.nar.xz
         '
     - save_cache:
