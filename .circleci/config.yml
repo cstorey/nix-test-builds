@@ -15,12 +15,7 @@ jobs:
             nix-channel --add https://nixos.org/channels/nixos-19.03-small nixpkgs
             nix-channel --update
     - run: nix-build
-    - run: |
-        nix-shell shell.nix --command '
-            set -xeuo pipefail &&
-            nix-store -qR  result | tee closure.txt &&
-            cat closure.txt | xargs nix-store --export | xz -v > /tmp/hi.nar.xz
-        '
+    - run: scripts/export.sh ./result /tmp/hi.nar.xz
     - save_cache:
         name: Nix cache save
         key: v1-hi-{{ checksum "shell.nix" }}-{{ checksum "default.nix" }}
