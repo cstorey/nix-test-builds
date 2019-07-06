@@ -1,11 +1,13 @@
-with import <nixpkgs> { };
-rustPlatform.buildRustPackage rec {
-  name = "hi";
-  version = "0.0";
+let
+    pkgs = import <nixpkgs> { };
+in
+pkgs.rustPlatform.buildRustPackage rec {
+    name = "hi";
+    version = "0.0";
 
-  buildInputs = [ ];
+    buildInputs = [ ];
 
-  src = ./.;
+    src = ./.;
 
-  cargoVendorDir = "vendor";
+    cargoVendorDir = "vendor";
 }
