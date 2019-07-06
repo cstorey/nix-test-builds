@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   build-nix:
     docker:
-    - image: nixos/nix
+    - image: nixorg/nix:circleci
     steps:
     - checkout
     - restore_cache:
@@ -17,7 +17,7 @@ jobs:
         name: Nix
         key: v0-hi-{{ arch }}-{{ .Branch }}
         paths:
-        - /nix
+        - /nix/store
     - run: cat closure.txt | xargs nix-store --export | xz -v > /tmp/hi.nar.xz
     - store_artifacts:
         path: /tmp/hi.nar.xz
