@@ -7,7 +7,7 @@ pkgs.rustPlatform.buildRustPackage rec {
 
     buildInputs = [ ];
 
-    src = ./.;
+    src = ./..;
 
     cargoVendorDir = "vendor";
 }
