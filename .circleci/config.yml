@@ -9,22 +9,22 @@ jobs:
     - checkout
     - restore_cache:
         name: Nix cache restore
-        key: v0-hi-{{ arch }}-{{ .Branch }}
+        key: v0-hi-{{ checksum "shell.nix" }}-{{ checksum "default.nix" }}
     - run: |
             # nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
             nix-channel --add https://nixos.org/channels/nixos-19.03-small nixpkgs
             nix-channel --update
     - run: nix-build
-    - save_cache:
-        name: Nix cache save
-        key: v0-hi-{{ arch }}-{{ .Branch }}
-        paths:
-        - /nix/store
     - run: |
         nix-shell shell.nix --command '
             nix-store -qR  result | tee closure.txt
             cat closure.txt | xargs nix-store --export | xz -v > /tmp/hi.nar.xz
         '
+    - save_cache:
+        name: Nix cache save
+        key: v0-hi-{{ checksum "shell.nix" }}-{{ checksum "default.nix" }}
+        paths:
+        - /nix/store
     - store_artifacts:
         path: /tmp/hi.nar.xz
 
