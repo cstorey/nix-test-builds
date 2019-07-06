@@ -7,7 +7,7 @@ jobs:
     - image: nixorg/nix:circleci
     steps:
     - checkout
-    - run: nix-hash *.nix ./scripts > /tmp/hashes.txt
+    - run: nix-hash --base32 ./nix ./scripts > /tmp/hashes.txt
     - restore_cache:
         name: Nix cache restore
         key: v1-hi-{{ checksum "/tmp/hashes.txt" }}
