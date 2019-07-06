@@ -8,7 +8,7 @@ jobs:
     steps:
     - checkout
     - restore_cache:
-        name: Nix
+        name: Nix cache restore
         key: v0-hi-{{ arch }}-{{ .Branch }}
     - run: |
             nix-channel --add https://nixos.org/channels/nixos-18.09-small nixpkgs
@@ -16,7 +16,7 @@ jobs:
             nix-env -i xz
     - run: nix-build
     - save_cache:
-        name: Nix
+        name: Nix cache save
         key: v0-hi-{{ arch }}-{{ .Branch }}
         paths:
         - /nix/store
