@@ -9,6 +9,7 @@ jobs:
     - checkout
     - run: nix-build
     - run: nix-store -qR  result | tee closure.txt
+    - run: nix-env -i xz
     - run: cat closure.txt | xargs nix-store --export | xz -v > /tmp/hi.nar.xz
 
 workflows:
