@@ -14,7 +14,6 @@ jobs:
             # nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
             nix-channel --add https://nixos.org/channels/nixos-19.03-small nixpkgs
             nix-channel --update
-            nix-env -i xz -i findutils
     - run: nix-build
     - save_cache:
         name: Nix cache save
@@ -22,8 +21,10 @@ jobs:
         paths:
         - /nix/store
     - run: |
+        nix-shell shell.nix --command '
             nix-store -qR  result | tee closure.txt
             cat closure.txt | xargs nix-store --export | xz -v > /tmp/hi.nar.xz
+        '
     - store_artifacts:
         path: /tmp/hi.nar.xz
 
