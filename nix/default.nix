@@ -1,13 +1,5 @@
 let
     pkgs = import <nixpkgs> { };
+    hipkg = import ./hi-pkg.nix;
 in
-pkgs.rustPlatform.buildRustPackage rec {
-    name = "hi";
-    version = "0.0";
-
-    buildInputs = [ ];
-
-    src = ./..;
-
-    cargoVendorDir = "vendor";
-}
+    hipkg pkgs
