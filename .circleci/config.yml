@@ -9,7 +9,7 @@ jobs:
     - checkout
     - restore_cache:
         name: Nix cache restore
-        key: v1-hi-{{ checksum "shell.nix" }}-{{ checksum "default.nix" }}
+        key: v1-hi-{{ checksum "default.nix" }}
     - run: |
             # nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
             nix-channel --add https://nixos.org/channels/nixos-19.03-small nixpkgs
@@ -18,7 +18,7 @@ jobs:
     - run: scripts/export.sh ./result /tmp/hi.nar.xz
     - save_cache:
         name: Nix cache save
-        key: v1-hi-{{ checksum "shell.nix" }}-{{ checksum "default.nix" }}
+        key: v1-hi-{{ checksum "default.nix" }}
         paths:
         - /nix
     - store_artifacts:
