@@ -11,7 +11,8 @@ jobs:
         name: Nix cache restore
         key: v0-hi-{{ arch }}-{{ .Branch }}
     - run: |
-            nix-channel --add https://nixos.org/channels/nixos-18.09-small nixpkgs
+            # nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
+            nix-channel --add https://nixos.org/channels/nixos-19.03-small nixpkgs
             nix-channel --update
             nix-env -i xz
     - run: nix-build
