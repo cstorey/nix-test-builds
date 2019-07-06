@@ -10,15 +10,19 @@ jobs:
     - restore_cache:
         name: Nix
         key: v0-hi-{{ arch }}-{{ .Branch }}
+    - run: |
+            nix-channel --add https://nixos.org/channels/nixos-18.09-small nixpkgs
+            nix-channel --update
+            nix-env -i xz
     - run: nix-build
-    - run: nix-store -qR  result | tee closure.txt
-    - run: nix-env -i xz
     - save_cache:
         name: Nix
         key: v0-hi-{{ arch }}-{{ .Branch }}
         paths:
         - /nix/store
-    - run: cat closure.txt | xargs nix-store --export | xz -v > /tmp/hi.nar.xz
+    - run: |
+            nix-store -qR  result | tee closure.txt
+            cat closure.txt | xargs nix-store --export | xz -v > /tmp/hi.nar.xz
     - store_artifacts:
         path: /tmp/hi.nar.xz
 
