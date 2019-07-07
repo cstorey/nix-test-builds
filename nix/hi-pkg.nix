@@ -5,6 +5,7 @@ let pkg = rustPlatform.buildRustPackage rec {
         buildInputs = [ ];
         src = ./..;
         cargoVendorDir = "vendor";
+        dontStrip = true;
     };
 in
     pkg
