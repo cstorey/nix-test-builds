@@ -5,6 +5,11 @@ jobs:
   build-nix:
     docker:
     - image: nixorg/nix:circleci
+    environment:
+      # By default nix puts `result` in the current directory, but we don't
+      # exclude that when creating the source archive.
+      # Hence, the result link depends on it's previous incarnation :/
+      RESULT: "/tmp/result"
     steps:
     - checkout
     - run: nix-hash --base32 ./nix ./scripts > /tmp/hashes.txt
@@ -15,8 +20,8 @@ jobs:
             # nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
             nix-channel --add https://nixos.org/channels/nixos-19.03-small nixpkgs
             nix-channel --update
-    - run: nix-build
-    - run: scripts/export.sh ./result /tmp/hi.nar.xz
+    - run: nix-build --out-link "$RESULT"
+    - run: scripts/export.sh "$RESULT" /tmp/hi.nar.xz
     - save_cache:
         name: Nix cache save
         key: v1-hi-{{ checksum "/tmp/hashes.txt" }}
