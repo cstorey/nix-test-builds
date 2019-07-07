@@ -15,7 +15,10 @@ jobs:
     - run: nix-hash --base32 ./nix ./scripts > /tmp/hashes.txt
     - restore_cache:
         name: Nix cache restore
-        key: v1-hi-{{ checksum "/tmp/hashes.txt" }}
+        keys:
+        - v1-hi-{{ arch }}-{{ .Branch }}-{{ checksum "/tmp/hashes.txt" }}
+        - v1-hi-{{ arch }}-{{ .Branch }}
+        - v1-hi-{{ arch }}-master
     - run: |
             # nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
             nix-channel --add https://nixos.org/channels/nixos-19.03-small nixpkgs
@@ -24,7 +27,7 @@ jobs:
     - run: scripts/export.sh "$RESULT" /tmp/hi.nar.xz
     - save_cache:
         name: Nix cache save
-        key: v1-hi-{{ checksum "/tmp/hashes.txt" }}
+        key: v1-hi-{{ arch }}-{{ .Branch }}-{{ checksum "/tmp/hashes.txt" }}
         paths:
         - /nix
     - store_artifacts:
