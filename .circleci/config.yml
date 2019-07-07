@@ -21,8 +21,7 @@ jobs:
         - v1-hi-{{ arch }}-{{ .Branch }}
         - v1-hi-{{ arch }}-master
     - run: |
-            # nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
-            nix-channel --add https://nixos.org/channels/nixos-19.03-small nixpkgs
+            nix-channel --add https://releases.nixos.org/nixos/unstable/nixos-19.09pre184820.aa2a7e49b82 nixpkgs
             nix-channel --update
     - run: nix-build --out-link "$RESULT"
     - run: nix-build --out-link "$RESULT" nix/services.nix
