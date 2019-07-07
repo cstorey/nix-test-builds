@@ -10,6 +10,7 @@ jobs:
       # exclude that when creating the source archive.
       # Hence, the result link depends on it's previous incarnation :/
       RESULT: "/tmp/result"
+      ARTIFACTS: "/tmp/artifacts"
     steps:
     - checkout
     - run: nix-hash --base32 ./nix ./scripts > /tmp/hashes.txt
@@ -25,14 +26,17 @@ jobs:
             nix-channel --update
     - run: nix-build --out-link "$RESULT"
     - run: nix-build --out-link "$RESULT" nix/services.nix
-    - run: scripts/export.sh "$RESULT" /tmp/hi.nar.xz
+    - run: |
+        mkdir -vp "$ARTIFACTS" &&
+        version=$(git describe) &&
+        scripts/export.sh "$RESULT" "$ARTIFACTS/hi-${version}.nar.xz"
     - save_cache:
         name: Nix cache save
         key: v1-hi-{{ arch }}-{{ .Branch }}-{{ checksum "/tmp/hashes.txt" }}
         paths:
         - /nix
     - store_artifacts:
-        path: /tmp/hi.nar.xz
+        path: /tmp/artifacts
 
 workflows:
   version: 2
