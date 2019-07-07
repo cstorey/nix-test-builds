@@ -8,7 +8,7 @@ let
             "^Cargo\..*$"
             "src" "src.*"
         ];
-        cargoSha256 = "0693p31ngg6qskfgav8w5psxl8gj61j6giicy8kk7aw0gnz5nvql";
+        cargoSha256 = "0jacm96l1gw9nxwavqi1x4669cg6lzy9hr18zjpwlcyb3qkw9z7f";
         dontStrip = true;
         doCheck = false;
     };
